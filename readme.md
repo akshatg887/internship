@@ -43,19 +43,19 @@ SolChat provides:
 └─────────────┘      └──────────────┘       └─────────────────┘
                           │
                           ▼
-                 │- **Solana**: Primary settlement layer (Anchor Framework 0.30.1)
+                       Solana: Primary settlement layer (Anchor Framework 0.30.1)
 
-                               ├──────────▶ Wormhole Bridge ─────▶ Ethereum- **Ethereum**: Secondary chain for cross-chain compatibility
+                          ├──────────▶ Wormhole Bridge ─────▶ Ethereum- **Ethereum**: Secondary chain for cross-chain compatibility
 
-                               │- **Wormhole**: Cross-chain bridge protocol
+                            |- Wormhole: Cross-chain bridge protocol
                  
 ```
 
 **Components:**
-- **Solana Program**: On-chain phone registry (Anchor) (`program/src/lib.rs`) .
-- **Backend Server**: Node.js with Express + Twilio  (`backend/whatsappServer.js`).
-- **Bridge Handler**: Cross-chain operations (Wormhole) (`backend/crossChainHandler.js`) .
-- **WhatsApp Handler**: Command parsing and message flow (`backend/whatsappHandler.js`).
+- **Solana Program**: On-chain phone registry (Anchor) ---> (`program/src/lib.rs`) .
+- **Backend Server**: Node.js with Express + Twilio ---> (`backend/whatsappServer.js`).
+- **Bridge Handler**: Cross-chain operations (Wormhole) ---> (`backend/crossChainHandler.js`) .
+- **WhatsApp Handler**: Command parsing and message flow ---> (`backend/whatsappHandler.js`).
 
 ---
 
@@ -206,46 +206,42 @@ WhatsApp message webhook endpoint used by Twilio.
 ---
 ## 🔍 Troubleshooting
 
-Common issues and solutions based on development challenges encountered during SolChat's build.
-
----
-
-### 🧩 Common Issues
+### 🧩 Common Issues:
 
 **1. Anchor Build Errors (Invalid Base58 String)**  
-Cause: Version mismatch between Anchor CLI and Solana tools.  
-Solution: Ensure Anchor 0.30.1 is installed (avm use 0.30.1). Clear target and rebuild with anchor build.  
-Prevention: Use cargo build-sbf as an alternative for faster builds.  
+  - Cause: Version mismatch between Anchor CLI and Solana tools.  
+  - Solution: Ensure Anchor 0.30.1 is installed (avm use 0.30.1). Clear target and rebuild with anchor build.  
+  - Prevention: Use cargo build-sbf as an alternative for faster builds.  
 
 **2. Solana Program Not Found (Program Not on Chain)**  
-Cause: Program not deployed or wrong program ID.  
-Solution: Verify deployment with solana address -k target/deploy/solchat_solana-keypair.json. Update PROGRAM_ID in .env.  
-Prevention: Test on devnet first; use anchor deploy --provider.cluster devnet.  
+  - Cause: Program not deployed or wrong program ID.  
+  - Solution: Verify deployment with solana address -k target/deploy/solchat_solana-keypair.json. Update PROGRAM_ID in .env.  
+  - Prevention: Test on devnet first; use anchor deploy --provider.cluster devnet.  
 
 **3. RPC Connection Timeouts**  
-Cause: Solana devnet congestion or rate limits.  
-Solution: Switch RPC endpoints (e.g., to Helius or GenesysGo). Add retries in solanaService.js.  
-Prevention: Monitor with solana validators and use paid RPCs for production.  
+  - Cause: Solana devnet congestion or rate limits.  
+  - Solution: Switch RPC endpoints (e.g., to Helius or GenesysGo). Add retries in solanaService.js.  
+  - Prevention: Monitor with solana validators and use paid RPCs for production.  
 
 **4. WhatsApp Webhook Not Working**  
-Cause: Incorrect ngrok URL or Twilio config.  
-Solution: Expose port 3000 with ngrok http 3000, update Twilio webhook URL, and check logs.  
-Prevention: Use HTTPS in production; verify with Twilio debugger.  
+  - Cause: Incorrect ngrok URL or Twilio config.  
+  - Solution: Expose port 3000 with ngrok http 3000, update Twilio webhook URL, and check logs.  
+  - Prevention: Use HTTPS in production; verify with Twilio debugger.  
 
 **5. Insufficient SOL Balance for Deployment/Transactions**  
-Cause: Devnet account lacks funds.  
-Solution: Fund with solana airdrop 2 (devnet only). For testnet, use faucets like https://faucet.solana.com/.  
-Prevention: Keep devnet accounts topped up; monitor with solana balance.  
+  - Cause: Devnet account lacks funds.  
+  - Solution: Fund with solana airdrop 2 (devnet only). For testnet, use faucets like https://faucet.solana.com/.  
+  - Prevention: Keep devnet accounts topped up; monitor with solana balance.  
 
 **6. Insufficient ETH Balance for Bridging/Transactions**
-Cause: Sepolia testnet account lacks ETH for gas fees during bridging, deployments, or transactions.
-Solution: Fund with Sepolia faucets like https://sepoliafaucet.com/ or https://faucet.quicknode.com/ethereum/sepolia. Request 0.1-0.5 ETH for testing.
-Prevention: Monitor balance via https://sepolia.etherscan.io/; keep accounts topped up before bridging operations.
+  - Cause: Sepolia testnet account lacks ETH for gas fees during bridging, deployments, or transactions.
+  - Solution: Fund with Sepolia faucets like https://sepoliafaucet.com/ or https://faucet.quicknode.com/ethereum/sepolia. Request 0.1-0.5 ETH for testing.
+  - Prevention: Monitor balance via https://sepolia.etherscan.io/; keep accounts topped up before bridging operations.
 
 **7. Cross-Chain Bridge Failures (Wormhole VAA Issues)**  
-Cause: Testnet delays (~30 minutes) or invalid tokens.  
-Solution: Check Wormhole status at https://wormholescan.io/. Use USDC for reliable bridging.  
-Prevention: Implemented progress callbacks and user notifications.  
+  - Cause: Testnet delays (~30 minutes) or invalid tokens.  
+  - Solution: Check Wormhole status at https://wormholescan.io/. Use USDC for reliable bridging.  
+  - Prevention: Implemented progress callbacks and user notifications.  
 
 **Debug Commands:**
 ```bash
@@ -325,6 +321,14 @@ Roadmap for evolving **SolChat** beyond the hackathon:
 - **Monetization:** Introduce transaction fees (0.1–0.5%), premium subscriptions, or affiliate swaps via Jupiter.  
 - **Jupiter Swap Restrictions:** Currently limited to established tokens due to liquidity pool requirements; new coins cannot be swapped.
 
+---
+## 🤝 Contributing
+
+1. Fork the repository  
+2. Create a feature branch
+3. Make your changes  
+4. Test thoroughly  
+5. Submit a pull request
 ---
 
 ## License
