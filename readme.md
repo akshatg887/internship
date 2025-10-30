@@ -1,19 +1,4 @@
-<div align="center">
-  <img src="https://via.placeholder.com/900x180?text=SolChat:+Multi-Chain+WhatsApp+Payments" alt="SolChat Banner"/>
-  
-  <p>
-    <a href="https://solana.com"><img src="https://img.shields.io/badge/Solana-Devnet-green?logo=solana" alt="Solana"/></a>
-    <a href="#"><img src="https://img.shields.io/badge/Anchor-0.30.1-purple?logo=rust" alt="Anchor"/></a>
-    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="License"/></a>
-    <a href="#"><img src="https://img.shields.io/badge/Node.js-16%2B-brightgreen?logo=node.js" alt="Node.js"/></a>
-  </p>
-</div>
-
----
-
 ## SolChat: Multi-Chain WhatsApp Payment System
-
-**License:** MIT  •  **Blockchain:** Solana Devnet  •  **Framework:** Anchor 0.30.1  •  **Language:** Rust & Node.js
 
 ---
 
@@ -31,7 +16,6 @@ SolChat provides:
 - Phone number to wallet mapping on-chain
 - WhatsApp integration for easy crypto transactions
 - Solana-based payments with cross-chain compatibility via Wormhole
-- Token swaps using Jupiter DEX
 - Secure backend management with Twilio API integration
 
 **Core Idea:** A decentralized bridge between traditional messaging (WhatsApp) and on-chain finance.
@@ -59,14 +43,13 @@ SolChat provides:
                           │
                           ▼
                  Wormhole ↔ Ethereum
-                 Jupiter ↔ Token Swaps
+                 
 ```
 
 **Components:**
 - **Solana Program**: On-chain phone registry (Anchor).
 - **Backend Server**: Node.js with Express + Twilio.
 - **Bridge Handler**: Cross-chain operations (Wormhole).
-- **Swap Handler**: Token swaps via Jupiter API.
 - **WhatsApp Handler**: Command parsing and message flow.
 
 ---
@@ -111,8 +94,25 @@ SOLANA_RPC_URL=https://api.devnet.solana.com
 PROGRAM_ID=BZ5Z67xFRgyCaobqDnRw2p2NDPu8EoqMFwV55rENVsBR
 TWILIO_ACCOUNT_SID=your_sid
 TWILIO_AUTH_TOKEN=your_auth
-TWILIO_WHATSAPP_NUMBER=whatsapp:+14155238886
+TWILIO_WHATSAPP_NUMBER=your_twilio_whatsapp_number
+
+PORT=3000
 ```
+
+# Twilio WhatsApp Setup
+
+## 1. Create Twilio Account
+- Sign up at [Twilio Console](https://www.twilio.com/console)
+- Navigate to **"Messaging" → "Try it out" → "Send a WhatsApp message"**
+
+## 2. WhatsApp Sandbox Setup
+- Get your sandbox WhatsApp number  
+- Configure webhook URL: `https://your-domain.com/webhook`  
+- For local development, use ngrok: `https://ngrok.com/`
+
+## 3. Get Twilio Credentials
+- Account SID and Auth Token from Twilio Console Dashboard  
+- WhatsApp sandbox phone number
 
 ### 4. Start Backend
 ```bash
@@ -120,14 +120,18 @@ cd backend
 npm run whatsapp
 ```
 
-### 5. Local Testing (Optional)
-Expose the server using ngrok:
-```bash
-ngrok http 3000
-```
-Use the generated HTTPS URL as your Twilio webhook.
+### 5. Set  Setup WhatsApp Webhook (for local development)
 
----
+```bash
+# Install ngrok globally
+npm install -g ngrok
+
+# Expose local server to internet
+ngrok http 3000
+
+# Copy the https URL and configure it in Twilio Console
+# Webhook URL: https://your-ngrok-url.ngrok.io/webhook
+```
 
 ## Smart Contract Setup
 
@@ -157,7 +161,6 @@ Once Twilio is configured:
    - `register` → Creates your Solana & Ethereum wallets.
    - `balance` → Checks wallet balances.
    - `send 1 sol to +1234567890` → Sends SOL.
-   - `swap 0.5 sol to usdc` → Swaps tokens.
    - `bridge 1 sol to ethereum` → Cross-chain transfer.
 
 ---
@@ -188,28 +191,12 @@ WhatsApp message webhook endpoint used by Twilio.
 
 ---
 
-## Testing
-
-### Local Simulation
-```bash
-node testWhatsApp.js   # Simulate WhatsApp messages
-node testCrossChain.js # Test Wormhole transfers
-```
-
-### Solana Program Tests
-```bash
-cd program
-cargo test-sbf
-```
-
----
-
 ## Tech Stack
 
 **Blockchain:** Solana (Anchor, Rust), Ethereum (Ethers.js)  
-**Cross-Chain:** Wormhole SDK, Jupiter API  
+**Cross-Chain:** Wormhole SDK  
 **Backend:** Node.js, Express, Twilio API, bs58, dotenv  
-**Dev Tools:** ngrok, Anchor CLI, Solana CLI, Aptos CLI
+**Dev Tools:** ngrok, Anchor CLI, Solana CLI
 
 ---
 
@@ -219,27 +206,6 @@ cargo test-sbf
 - Phone number hashed before on-chain storage.
 - Custodial wallets for demo purposes.
 - Production use should migrate to MPC or HSM-secured wallets.
-
----
-
-## Roadmap
-
-**Phase 1 (MVP)**  
-- ✅ Solana deployment  
-- ✅ WhatsApp integration  
-- ✅ Token swap (Jupiter)  
-- ✅ Cross-chain bridge (Wormhole)
-
-**Phase 2 (Mainnet)**  
-- 🔒 Security audit  
-- 💬 Multi-language support  
-- 🌐 Web dashboard  
-- 📱 Mobile app integration
-
-**Phase 3 (Expansion)**  
-- Merchant tools  
-- Recurring payments  
-- Payment analytics
 
 ---
 
